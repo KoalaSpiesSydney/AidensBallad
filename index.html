@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://use.typekit.net/ahv5tjx.css">
+  <title>The Ballad of Aiden — Chapters (Matched Nav)</title>
+  <style>
+    /* 0) Reset + base */
+    html, body { margin: 0; padding: 0; }
+
+    /* 1) Video background remains as you have it */
+    .video-background {
+      position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      z-index: -1; background: #000; /* fallback if video can't load */
+    }
+
+    /* 2) Color system that adapts to dark/light screens */
+    :root {
+      --text: #f7f7f7;
+      --muted: #d8d8d8;
+      --card: rgba(0,0,0,0.45);
+      --accent: #d14f4f;         /* deeper red for better contrast */
+      --accent-hover: #b43e3e;
+      --title: #ede9a5;          /* your gold */
+      /* nav pills (match soundtrack page) */
+      --pill-bg: rgba(255,255,255,0.08);
+      --pill-border: rgba(255,255,255,0.35);
+      --pill-hover: rgba(255,255,255,0.16);
+      --outline: rgba(250, 250, 220, 0.45);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --text: #111;
+        --muted: #333;
+        --card: rgba(255,255,255,0.65);
+        --accent: #c24545;
+        --accent-hover: #9f3535;
+        --title: #6b5f00; /* darker gold reads better on light bg */
+        --pill-bg: rgba(0,0,0,0.06);
+        --pill-border: rgba(0,0,0,0.18);
+        --pill-hover: rgba(0,0,0,0.12);
+        --outline: rgba(0,0,0,0.12);
+      }
+    }
+
+    /* 3) Hero layout */
+    .hero { position: relative; min-height: 48vh; display: grid; place-items: center; padding: 6vh 4vw; }
+    .hero-content { text-align: center; padding: 24px 32px; }
+
+    /* 4) Heading with glow + fluid sizing */
+    h1 {
+      font-family: "adlery-pro-swash", sans-serif; font-weight: 400; font-style: normal;
+      color: var(--title); text-align: center; letter-spacing: clamp(0.2rem, 2vw, 1.2rem);
+      font-size: clamp(2.4rem, 8vw, 7rem);
+      text-shadow: 3px 3px 8px rgba(0,0,0,0.7), 0 0 12px rgba(255,255,150,0.8), 0 0 25px rgba(255,255,150,0.6);
+      margin: 0;
+    }
+    
+
+    /* 5) Audio wrapper: center + full width on small screens */
+    #audio-player-wrapper { text-align: center; margin: 32px auto 16px; max-width: 900px; display: flex; flex-direction: column; align-items: center; color: var(--text); }
+    #audio-player-wrapper audio { width: min(100%, 900px); }
+    #now-playing-title h2 { margin: 12px 0 0; color: var(--text); font-size: clamp(1rem, 2.6vw, 1.4rem); }
+
+    /* 6) Playlist grid: responsive */
+    .playlist-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 20px; color: var(--text); max-width: 1200px; margin: 0 auto; }
+    @media (max-width: 900px) { .playlist-grid { grid-template-columns: 1fr; } }
+    .playlist-column ul { list-style: none; padding: 0; margin: 0; }
+
+    /* Track tiles */
+    .track {
+      cursor: pointer; margin: 10px 0; display: flex; align-items: center; justify-content: center;
+      padding: 12px 14px; background: rgba(241,108,108,0.7); color: #fff; border-radius: 12px;
+      transition: transform .15s ease, background-color .2s ease; text-align: center;
+      box-shadow: 0 0 0 1px var(--outline);
+    }
+    .track:hover { background: rgba(241,108,108,0.9); transform: translateY(-1px); }
+    .track h2, .track span { font-family: 'Vandalism', sans-serif; font-size: clamp(1rem, 2.6vw, 1.2rem); text-transform: uppercase; margin: 0.2rem 0; color: #fff; }
+    
+    
+    /* 7) NAVIGATION — matched to soundtrack page */
+    nav.site-nav { padding: 20px 16px 28px; }
+    .site-nav ul {
+      list-style: none; padding: 0; margin: 0 auto; max-width: 1100px;
+      display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
+      background: transparent; /* no grey bar */
+    }
+    .site-nav a {
+      display: block; text-decoration: none; text-align: center; font-weight: 700; color: var(--text);
+      padding: 12px 16px; border: 1px solid var(--pill-border); border-radius: 999px;
+      background: var(--pill-bg); backdrop-filter: blur(3px);
+      transition: background-color .2s ease, transform .12s ease, box-shadow .2s ease, color .2s ease;
+    }
+    .site-nav a:hover { background: var(--pill-hover); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+    @media (max-width: 900px) { .site-nav ul { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .site-nav ul { grid-template-columns: 1fr; } }
+
+    /* 8) Footer */
+    .site-footer { background: #1d0101; text-align: center; padding: 15px; margin-top: 30px; color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Full-page video background -->
+  <video autoplay muted loop playsinline preload="metadata" class="video-background">
+    <source src="200214-912119524_small.mp4" type="video/mp4">
+  </video>
+
+  <!-- PAGE CONTENT -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>The Ballad of Aiden</h1>
+    </div>
+  </section>
+
+  <div id="audio-player-wrapper">
+    <audio id="audio-player" controls>
+      <source id="audio-source" src="" type="audio/mpeg">
+    </audio>
+    <div id="now-playing-title"><h2>Click on a chapter</h2></div>
+  </div>
+
+  <section class="playlist-grid">
+    <div class="playlist-column">
+      <ul>
+        <li class="track" data-src="1Carefulwhatyouwish.mp3" data-title="Chapter 1 – A Wish"><span> <h2>Chapter 1 – A Wish </h2></span></li>
+        <li class="track" data-src="AChapter2aug.mp3" data-title="Chapter 2 – Never expected this!"><h2>Chapter 2 – Never Expected This</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 3 – coming soon"><h2>Chapter 3 – Rejection</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 4 –  coming soon"><h2>Chapter 4 – A Meeting</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 5– coming soon"><h2>Chapter 5 – Philosophising</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 6 – coming soon"><h2>Chapter 6 – the Prison of Liquorice</h2></li>
+      </ul>
+    </div>
+
+    <div class="playlist-column">
+      <ul>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 7 coming soon"><h2>Chapter 7 – Journey Up the Volcano</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 8 – coming soon"><h2>Chapter 8 – A Magic Show</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 9 – coming soon"><h2>Chapter 9 – Village of Cave</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 10 – soming soon"><h2>Chapter 10 – Sabotage</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 11 – coming soon"><h2>Chapter 11– Koala Spy</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 12 – coming soon"><h2>Chapter 12 – the Second Meeting</h2></li>
+        <li class="track" data-src="tbc.mp3" data-title="Chapter 13 – coming soon"><h2>Chapter 13 – the Chewing Gum</h2></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- NAVIGATION (matched) -->
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <li><a href="Soundtrack.html">Soundtrack</a></li>
+      <li><a href="https://koalaspies.myportfolio.com/work">Merch</a></li>
+      <li><a href="newabout.html">About</a></li>
+      <li><a href="Newpart2.html">Part 2</a></li>
+    </ul>
+  </nav>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 Koala Spies Sydney</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const audioPlayer = document.getElementById('audio-player');
+      const audioSource = document.getElementById('audio-source');
+      const nowPlayingTitle = document.querySelector('#now-playing-title h2');
+      const tracks = Array.from(document.querySelectorAll('.track'));
+      let currentTrackIndex = -1;
+
+      function playTrack(index) {
+        const track = tracks[index];
+        if (!track) return;
+        const src = track.dataset.src;
+        const title = track.dataset.title || 'Unknown Title';
+        audioSource.src = src;
+        audioPlayer.load();
+        audioPlayer.play().catch(() => {/* autoplay may be blocked */});
+        nowPlayingTitle.textContent = `Now Playing: ${title}`;
+        currentTrackIndex = index;
+      }
+
+      tracks.forEach((track, index) => { track.addEventListener('click', () => playTrack(index)); });
+
+      audioPlayer.addEventListener('ended', () => {
+        const nextIndex = currentTrackIndex + 1;
+        if (nextIndex < tracks.length) playTrack(nextIndex);
+      });
+    });
+  </script>
+</body>
+</html>
