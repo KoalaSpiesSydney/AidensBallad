@@ -18,8 +18,8 @@
   --pill-border: rgba(255,255,255,0.35);
   --pill-hover: rgba(255,255,255,0.16);
   --accent: #ffcc00;
-  --tile-bg: rgba(232, 123, 113, 0.7);
-  --tile-bg-hover: rgba(127, 57, 57, 0.9);
+  --tile-bg: transparent;
+  --tile-bg-hover: rgba(214, 191, 209, 0.9);
   --tile-text: #fff;
   --outline: rgba(250,250,220,0.45);
 }
@@ -91,7 +91,15 @@ header {
 
 h1 {
  font-family: "adlery-pro-swash", sans-serif;
-      font-weight: 400; font-style: normal; color: var(--text);
+
+      font-size: clamp(2.4rem, 6vw, 5.6rem);
+      margin: 10px 0 0;
+      text-shadow: 2px 2px 4px var(--shadow);
+      letter-spacing: 0.09em;
+}
+h3 {
+ font-family: "adlery-pro-swash", sans-serif;
+      font-weight: 300; font-style: normal; color: var(--text);
       font-size: clamp(2.4rem, 6vw, 5.6rem);
       margin: 10px 0 0;
       text-shadow: 2px 2px 4px var(--shadow);
@@ -109,9 +117,27 @@ h1 {
   backdrop-filter: blur(2px);
 }
 
-audio {
-  width: min(900px, 92vw);
+
+  audio {
+  background: transparent;
+  border: none;
+  outline: none;
 }
+
+audio::-webkit-media-controls-panel {
+  background: transparent !important;
+}
+
+audio::-webkit-media-controls-enclosure {
+  background: transparent !important;
+}
+
+
+#audio-player {
+  background: transparent;
+  border: none;
+}
+
 
 #now-playing-title {
   font-family: "adlery-pro", sans-serif;
@@ -135,7 +161,7 @@ audio {
 
 #audio-player-wrapper.playing #now-playing-title {
   font-weight: 400;
-  color: rgba(232, 11, 147, 0.88);
+  color: rgba(61, 39, 53, 0.88);
   text-shadow: 
     0 0 8px rgba(255, 255, 255, 0.6),
     0 0 12px rgba(255, 255, 255, 0.4);
@@ -306,13 +332,18 @@ nav h5 {
   </video>
 
   <header>
-    <h1>The Ballad of Aiden<br> Audiobook</h1>
+    <h1>The Ballad of Aiden </h1>  <br> <h2>Audiobook</h2>
   </header>
 
   <div id="audio-player-wrapper">
     <audio id="audio-player" controls>
       <source id="audio-source" src="" type="audio/mpeg">
     </audio>
+
+
+
+
+
     <div id="now-playing-title">Click on a chapter</div>
   </div>
 
@@ -328,7 +359,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+            
             </div>
           </div>
         </li>
@@ -339,7 +370,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+           
             </div>
           </div>
         </li>
@@ -350,7 +381,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+         
             </div>
           </div>
         </li>
@@ -361,7 +392,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+        
             </div>
           </div>
         </li>
@@ -372,7 +403,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+            
             </div>
           </div>
         </li>
@@ -383,7 +414,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+            
             </div>
           </div>
         </li>
@@ -394,7 +425,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+            
             </div>
           </div>
         </li>
@@ -412,7 +443,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+         
             </div>
           </div>
         </li>
@@ -423,7 +454,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+             
             </div>
           </div>
         </li>
@@ -434,7 +465,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+        
             </div>
           </div>
         </li>
@@ -445,7 +476,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+    
             </div>
           </div>
         </li>
@@ -456,7 +487,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+        
             </div>
           </div>
         </li>
@@ -467,7 +498,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+
             </div>
           </div>
         </li>
@@ -478,7 +509,7 @@ nav h5 {
             <div class="track-buttons">
               <button class="btn" data-action="play">▶</button>
               <button class="btn" data-action="pause">⏸</button>
-              <button class="btn" data-action="stop">⏹</button>
+        
             </div>
           </div>
         </li>
