@@ -1,435 +1,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="https://use.typekit.net/ahv5tjx.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://use.typekit.net/ahv5tjx.css">
+  <title>The Ballad of Aiden — Audiobook</title>
 
 <style>
-/* ---------------- GLOBAL (MOBILE FIRST) ---------------- */
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:"proxima-nova", sans-serif;
-  background:#f5f5f5;
-  color:#222;
 
-  
-}
-h1,h4,h5{margin:0;font-weight:600}
-a{color:inherit;text-decoration:none}
-
-  
-/* ---------------- HEADER (MOBILE FIRST) ---------------- */
-.title-header h1{
-  font-family: "Cinzel", serif;
+/* ---------------- THEME TOKENS (matching page 1) ---------------- */
+:root {
+  --text: #f5f4f2;
+  --muted: #ebe9e4;
+  --shadow: rgb(0, 153, 204);
+  --pill-bg: rgba(255,255,255,0.08);
+  --pill-border: rgba(255,255,255,0.35);
+  --pill-hover: rgba(255,255,255,0.16);
+  --accent: #ffcc00;
+  --tile-bg: rgba(232, 123, 113, 0.7);
+  --tile-bg-hover: rgba(127, 57, 57, 0.9);
+  --tile-text: #fff;
+  --outline: rgba(250,250,220,0.45);
 }
 
-  
-  .title-header{
-  position:relative;
-  height:180px;                 /* smaller by default */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  padding:0 16px;
-}
-.title-video{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:0.3;
-}
-.title-header h1{
-  position:relative;
-  z-index:1;
-  color:#eee;
-  font-size:clamp(2.1rem, 8vw, 3.2rem); /* mobile-first scaling */
-  text-align:center;
-  line-height:1.05;
-  text-shadow:2px 2px 8px #353535;
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: #0f0f12;
+    --muted: #222;
+    --shadow: rgba(0,0,0,0.35);
+    --pill-bg: rgba(0,0,0,0.06);
+    --pill-border: rgba(0,0,0,0.18);
+    --pill-hover: rgba(0,0,0,0.12);
+    --outline: rgba(0,0,0,0.12);
+  }
 }
 
-/* ---------------- AUDIO PLAYER (MOBILE FIRST) ---------------- */
-#audio-player-wrapper{
-  text-align:center;
-  padding:16px 12px;
-}
-#audio-player{
-  width:min(520px, 92vw);        /* make player fit on phones */
-}
-#now-playing-title{
-  margin-top:10px;
-  font-size:1.05rem;
-  font-weight:600;
+/* ---------------- GLOBAL ---------------- */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-/* ---------------- PLAYLIST GRID (MOBILE FIRST) ---------------- */
-.playlist-grid{
-  display:grid;
-  grid-template-columns:1fr;     /* default: single column */
-  gap:16px;
-  padding:16px 12px;
-  max-width:1100px;
-  margin:0 auto;
-}
-.playlist-column ul{
-  list-style:none;
-  padding:0;
-  margin:0;
-}
-.track{
-  background:#fff;
-  padding:12px 12px;
-  margin-bottom:12px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  cursor:pointer;
-  transition:background 0.2s ease;
-}
-.track:hover{background:#f0f0f0}
+*, *::before, *::after { box-sizing: inherit; }
 
-.track-row{
-  display:flex;
-  flex-direction:column;         /* stack title + buttons on phones */
-  gap:10px;
+body {
+  font-family: "avenir-next-lt-pro", sans-serif;
+  background: #000; /* fallback behind video */
+  color: var(--text);
 }
-.track-title{
-  font-size:1rem;
-  font-weight:600;
-  line-height:1.3;
-  max-width:100%;
-}
-.track-buttons{
-  display:flex;
-  gap:8px;
-  justify-content:flex-start;
-  flex-wrap:wrap;
-}
-.btn{
-  width:44px;                    /* friendlier tap target */
-  height:44px;
-  border-radius:8px;
-  border:none;
-  background:#333;
-  color:#fff;
-  font-size:1.1rem;
-  cursor:pointer;
-  transition:background 0.2s ease;
-}
-.btn:hover{background:#555}
 
-/* ---------------- NAV (MOBILE FIRST) ---------------- */
-nav ul{
-  display:flex;
-  flex-wrap:wrap;                 /* wrap on small screens */
-  justify-content:center;
-  gap:14px 18px;
-  padding:16px 12px;
-  margin:0;
-  list-style:none;
-  text-align:center;
+h1, h4, h5 {
+  margin: 0;
+  font-weight: 600;
 }
-nav h5{font-size:1rem}
-nav a{display:inline-block;padding:8px 10px}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------------- VIDEO BACKGROUND ---------------- */
+.video-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  background: #000;
+}
+
+/* ---------------- HEADER ---------------- */
+.title-header {
+  position: relative;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 40px 16px;
+}
+
+h1 {
+ font-family: "adlery-pro-swash", sans-serif;
+      font-weight: 400; font-style: normal; color: var(--text);
+      font-size: clamp(2.4rem, 6vw, 5.6rem);
+      margin: 10px 0 0;
+      text-shadow: 2px 2px 4px var(--shadow);
+      letter-spacing: 0.03em;
+}
+
+/* ---------------- AUDIO PLAYER ---------------- */
+#audio-player-wrapper {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  padding: 10px 16px 0;
+  border-radius: 24px;
+  box-shadow: 0 0 0 1px var(--outline);
+  backdrop-filter: blur(2px);
+}
+
+audio {
+  width: min(900px, 92vw);
+}
+
+#now-playing-title {
+  font-family: "adlery-pro", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  color: rgb(237, 249, 206);
+  text-shadow: 0 1px 2px var(--shadow);
+  margin: 30px auto 20px;
+  text-align: center;
+  background-color: rgba(22, 1, 1, 0.55);
+  max-width: 900px;
+  border-radius: 30px;
+  padding: 14px 22px;
+  box-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.35),
+    0 0 50px rgba(255, 255, 160, 0.2),
+    inset 0 0 16px rgba(255, 255, 180, 0.18);
+  transition: all 0.4s ease-in-out, text-shadow 0.3s ease-in-out;
+}
+
+#audio-player-wrapper.playing #now-playing-title {
+  font-weight: 400;
+  color: rgba(232, 11, 147, 0.88);
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.6),
+    0 0 12px rgba(255, 255, 255, 0.4);
+  animation: playerPulse 5s infinite ease-in-out;
+  background: linear-gradient(135deg, rgba(254,254,251,0.9), rgba(245,234,240,0.9));
+  border: none;
+  border-radius: 30px;
+  padding: 18px 26px;
+  box-shadow: 
+    0 0 20px rgba(244, 239, 186, 0.4),
+    0 0 40px rgba(255, 225, 100, 0.3),
+    inset 0 0 12px rgba(200, 200, 129, 0.2);
+  transform: scale(1.02);
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+@keyframes playerPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+/* ---------------- PLAYLIST GRID ---------------- */
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  padding: 28px 16px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .playlist-grid { grid-template-columns: 1fr; }
+}
+
+.playlist-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  flex-wrap: wrap;
+  background: var(--tile-bg);
+  color: var(--tile-text);
+  transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 0 1px var(--outline);
+}
+
+.track:hover {
+  background: var(--tile-bg-hover);
+  transform: translateY(-1px);
+}
+
+.track-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.track-title {
+  font-size: clamp(1rem, 2.6vw, 1.25rem);
+  font-weight: 700;
+  max-width: 70%;
+  line-height: 1.3;
+}
+
+.track-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(22, 1, 1, 0.55);
+  color: var(--tile-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn:hover {
+  background: rgba(22, 1, 1, 0.75);
+  transform: scale(1.08);
+}
+
+/* ---------------- NAV (pill style matching page 1) ---------------- */
+nav.site-nav {
+  padding: 20px 16px 28px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  background: transparent;
+}
+
+nav a {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 700;
+  padding: 12px 16px;
+  color: #fff;
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  background: var(--pill-bg);
+  backdrop-filter: blur(3px);
+  transition: background-color 0.2s ease, transform 0.12s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+nav a:hover {
+  background: var(--pill-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  color: var(--text);
+}
+
+nav h5 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  nav ul { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 520px) {
+  nav ul { grid-template-columns: 1fr; }
+}
 
 /* ---------------- FOOTER ---------------- */
-.site-footer{
-  text-align:center;
-  padding:18px 12px;
-  font-size:0.9rem;
-  background:#222;
-  color:#eee;
+.site-footer {
+  width: 100%;
+  color: var(--text);
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 0.95rem;
+  position: relative;
+  margin-top: 20px;
+  border-top: 1px solid var(--pill-border);
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.18));
 }
 
-/* ---------------- ENHANCEMENTS FOR LARGER SCREENS ---------------- */
-@media (min-width: 700px){
-  .title-header{height:250px}
-  .title-header h1{font-size:clamp(3.2rem, 6vw, 6rem)}
-  .playlist-grid{
-    grid-template-columns:1fr 1fr; /* becomes two columns on larger screens */
-    gap:25px;
-    padding:20px;
-  }
-  .track-row{
-    flex-direction:row;            /* title left, buttons right on larger screens */
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-  }
-  .track-title{max-width:70%}
-  .track-buttons{justify-content:flex-end}
-}
 </style>
 </head>
 
 <body>
-
-<header class="title-header">
-  <video autoplay muted loop playsinline class="title-video">
+  <video autoplay muted loop playsinline preload="metadata" class="video-background">
     <source src="3Moons1.mp4" type="video/mp4">
   </video>
-  <h1>The Ballad of Aiden</h1>
-</header>
 
-<div id="audio-player-wrapper">
-  <audio id="audio-player" controls>
-    <source id="audio-source" src="" type="audio/mpeg">
-  </audio>
-  <div id="now-playing-title">Click on a chapter</div>
-</div>
+  <header>
+    <h1>The Ballad of Aiden<br> Audiobook</h1>
+  </header>
 
-<section class="playlist-grid">
-
-  <!-- LEFT COLUMN -->
-  <div class="playlist-column">
-    <ul>
-
-      <li class="track" data-src="1Carefulwhatyouwish.mp3" data-title="Chapter 1 – Careful What You Wish">
-        <div class="track-row">
-          <span class="track-title">Chapter 1 – Careful What You Wish</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-        
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="AChapter2aug.mp3" data-title="Chapter 2 – Never Expected This">
-        <div class="track-row">
-          <span class="track-title">Chapter 2 – Never Expected This</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="3Itcanbe.mp3" data-title="Chapter 3 – It Can't Be So?">
-        <div class="track-row">
-          <span class="track-title">Chapter 3 – It Can't Be So?</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-          
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="4theroundtableAUG.mp3" data-title="Chapter 4 – The Almost Round Table">
-        <div class="track-row">
-          <span class="track-title">Chapter 4 – The Almost Round Table</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-          
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="5Philosophising.mp3" data-title="Chapter 5 – Philosophising">
-        <div class="track-row">
-          <span class="track-title">Chapter 5 – Philosophising</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-          
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="6theTower.mp3" data-title="Chapter 6 – The Tower of Liquorice">
-        <div class="track-row">
-          <span class="track-title">Chapter 6 – The Tower of Liquorice</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="AlgoritmoDoomScrollClick.mp3" data-title="Sponsor Aiden">
-        <div class="track-row">
-          <span class="track-title">Sponsor Aiden</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-      
-          </div>
-        </div>
-      </li>
-
-    </ul>
+  <div id="audio-player-wrapper">
+    <audio id="audio-player" controls>
+      <source id="audio-source" src="" type="audio/mpeg">
+    </audio>
+    <div id="now-playing-title">Click on a chapter</div>
   </div>
 
-  <!-- RIGHT COLUMN -->
-  <div class="playlist-column">
+  <section class="playlist-grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="playlist-column">
+      <ul>
+
+        <li class="track" data-src="1Carefulwhatyouwish.mp3" data-title="Chapter 1 – Careful What You Wish">
+          <div class="track-row">
+            <span class="track-title">Chapter 1 – Careful What You Wish</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="AChapter2aug.mp3" data-title="Chapter 2 – Never Expected This">
+          <div class="track-row">
+            <span class="track-title">Chapter 2 – Never Expected This</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="3Itcanbe.mp3" data-title="Chapter 3 – It Can't Be So?">
+          <div class="track-row">
+            <span class="track-title">Chapter 3 – It Can't Be So?</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="4theroundtableAUG.mp3" data-title="Chapter 4 – The Almost Round Table">
+          <div class="track-row">
+            <span class="track-title">Chapter 4 – The Almost Round Table</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="5Philosophising.mp3" data-title="Chapter 5 – Philosophising">
+          <div class="track-row">
+            <span class="track-title">Chapter 5 – Philosophising</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="6theTower.mp3" data-title="Chapter 6 – The Tower of Liquorice">
+          <div class="track-row">
+            <span class="track-title">Chapter 6 – The Tower of Liquorice</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="AlgoritmoDoomScrollClick.mp3" data-title="Sponsor Aiden">
+          <div class="track-row">
+            <span class="track-title">Sponsor Aiden</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="playlist-column">
+      <ul>
+
+        <li class="track" data-src="7upthevolcano.mp3" data-title="Chapter 7 – Journey Up the Volcano">
+          <div class="track-row">
+            <span class="track-title">Chapter 7 – Journey Up the Volcano</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="8Itsnotmagic.mp3" data-title="Chapter 8 – A Magic Show">
+          <div class="track-row">
+            <span class="track-title">Chapter 8 – A Magic Show</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="9BearCave.mp3" data-title="Chapter 9 – The Village of Caves">
+          <div class="track-row">
+            <span class="track-title">Chapter 9 – The Village of Caves</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="10SabotageAug.mp3" data-title="Chapter 10 – Sabotage">
+          <div class="track-row">
+            <span class="track-title">Chapter 10 – Sabotage</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="chapter11c.mp3" data-title="Chapter 11 – The Koala Spy">
+          <div class="track-row">
+            <span class="track-title">Chapter 11 – The Koala Spy</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="Chapter12c.mp3" data-title="Chapter 12 – The Second Almost Round Table">
+          <div class="track-row">
+            <span class="track-title">Chapter 12 – The Second Almost Round Table</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+        <li class="track" data-src="Chapter13c.mp3" data-title="Chapter 13 – The Magic Chewing Gum">
+          <div class="track-row">
+            <span class="track-title">Chapter 13 – The Magic Chewing Gum</span>
+            <div class="track-buttons">
+              <button class="btn" data-action="play">▶</button>
+              <button class="btn" data-action="pause">⏸</button>
+              <button class="btn" data-action="stop">⏹</button>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+  </section>
+
+  <nav class="site-nav" aria-label="Primary">
     <ul>
-
-      <li class="track" data-src="7upthevolcano.mp3" data-title="Chapter 7 – Journey Up the Volcano">
-        <div class="track-row">
-          <span class="track-title">Chapter 7 – Journey Up the Volcano</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="8Itsnotmagic.mp3" data-title="Chapter 8 – A Magic Show">
-        <div class="track-row">
-          <span class="track-title">Chapter 8 – A Magic Show</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-          
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="9BearCave.mp3" data-title="Chapter 9 – The Village of Caves">
-        <div class="track-row">
-          <span class="track-title">Chapter 9 – The Village of Caves</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-          
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="10SabotageAug.mp3" data-title="Chapter 10 – Sabotage">
-        <div class="track-row">
-          <span class="track-title">Chapter 10 – Sabotage</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="chapter11c.mp3" data-title="Chapter 11 – The Koala Spy">
-        <div class="track-row">
-          <span class="track-title">Chapter 11 – The Koala Spy</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="Chapter12c.mp3" data-title="Chapter 12 – The Second Almost Round Table">
-        <div class="track-row">
-          <span class="track-title">Chapter 12 – The Second Almost Round Table</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
-      <li class="track" data-src="Chapter13c.mp3" data-title="Chapter 13 – The Magic Chewing Gum">
-        <div class="track-row">
-          <span class="track-title">Chapter 13 – The Magic Chewing Gum</span>
-          <div class="track-buttons">
-            <button class="btn" data-action="play">▶</button>
-            <button class="btn" data-action="pause">⏸</button>
-            
-          </div>
-        </div>
-      </li>
-
+      <li><a href="[koalaspies.myportfolio.com](https://koalaspies.myportfolio.com/work)"><h5>Merch</h5></a></li>
+      <li><a href="music.html"><h5>Soundtrack</h5></a></li>
+      <li><a href="about.html"><h5>About</h5></a></li>
+      <li><a href="morechapters.html"><h5>Part 2… in continuation…</h5></a></li>
     </ul>
-  </div>
+  </nav>
 
-</section>
+  <footer class="site-footer">
+    <p>&copy; 2025 Justine Kelly &amp; Koala Spies</p>
+  </footer>
 
-<nav>
-  <ul>
-    <li><a href="https://koalaspies.myportfolio.com/work"><h5>Merch</h5></a></li>
-    <li><a href="music.html"><h5>Soundtrack</h5></a></li>
-    <li><a href="about.html"><h5>About</h5></a></li>
-    <li><a href="morechapters.html"><h5>Part 2… in continuation…</h5></a></li>
-  </ul>
-</nav>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
 
-<footer class="site-footer">
-  <p>&copy; <span id="year"></span> 2025 Justine Kelly &amp; Koala Spies</p>
-</footer>
+    const audioPlayer = document.getElementById("audio-player");
+    const audioSource = document.getElementById("audio-source");
+    const nowPlaying = document.getElementById("now-playing-title");
+    const wrapper = document.getElementById("audio-player-wrapper");
+    const tracks = Array.from(document.querySelectorAll(".track"));
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    let currentIndex = -1;
 
-  const audioPlayer = document.getElementById("audio-player");
-  const audioSource = document.getElementById("audio-source");
-  const nowPlaying = document.getElementById("now-playing-title");
-  const tracks = Array.from(document.querySelectorAll(".track"));
-  const yearEl = document.getElementById("year");
+    function playTrack(index) {
+      const track = tracks[index];
+      if (!track) return;
 
-  yearEl.textContent = new Date().getFullYear();
+      const src = track.dataset.src;
+      const title = track.dataset.title;
 
-  let currentIndex = -1;
+      audioSource.src = src;
+      audioPlayer.load();
+      audioPlayer.play();
 
-  function playTrack(index) {
-    const track = tracks[index];
-    if (!track) return;
+      nowPlaying.textContent = "Now Playing: " + title;
+      currentIndex = index;
+      wrapper.classList.add("playing");
+    }
 
-    const src = (track.dataset.src || "").trim();
-    const title = track.dataset.title || "";
+    tracks.forEach((track, index) => {
 
-    audioSource.src = src;
-    audioPlayer.load();
-    audioPlayer.play();
+      track.addEventListener("click", () => playTrack(index));
 
-    nowPlaying.textContent = "Now Playing: " + title;
-    currentIndex = index;
-  }
+      const buttons = track.querySelectorAll(".btn");
 
-  tracks.forEach((track, index) => {
+      buttons.forEach(btn => {
+        btn.addEventListener("click", e => {
+          e.stopPropagation();
+          const action = btn.dataset.action;
 
-    track.addEventListener("click", () => playTrack(index));
-
-    const buttons = track.querySelectorAll(".btn");
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", e => {
-        e.stopPropagation();
-        const action = btn.dataset.action;
-
-        if (action === "play") playTrack(index);
-        if (action === "pause") audioPlayer.pause();
-        if (action === "stop") {
-          audioPlayer.pause();
-          audioPlayer.currentTime = 0;
-          nowPlaying.textContent = "Stopped";
-        }
+          if (action === "play") playTrack(index);
+          if (action === "pause") {
+            audioPlayer.pause();
+            wrapper.classList.remove("playing");
+          }
+          if (action === "stop") {
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
+            nowPlaying.textContent = "Stopped";
+            wrapper.classList.remove("playing");
+          }
+        });
       });
+
+    });
+
+    audioPlayer.addEventListener("ended", () => {
+      const next = currentIndex + 1;
+      if (next < tracks.length) playTrack(next);
+      else {
+        nowPlaying.textContent = "Finished";
+        wrapper.classList.remove("playing");
+      }
+    });
+
+    audioPlayer.addEventListener("pause", () => {
+      wrapper.classList.remove("playing");
+    });
+
+    audioPlayer.addEventListener("play", () => {
+      wrapper.classList.add("playing");
     });
 
   });
-
-  audioPlayer.addEventListener("ended", () => {
-    const next = currentIndex + 1;
-    if (next < tracks.length) playTrack(next);
-    else nowPlaying.textContent = "Finished";
-  });
-
-});
-</script>
+  </script>
 
 </body>
 </html>
