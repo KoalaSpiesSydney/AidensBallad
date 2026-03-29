@@ -92,7 +92,7 @@ header {
 h1 {
  font-family: "adlery-pro-swash", sans-serif;
 
-      font-size: clamp(2.4rem, 6vw, 5.6rem);
+      font-size: clamp(4.4rem, 8vw, 7.6rem);
       margin: 10px 0 0;
       text-shadow: 2px 2px 4px var(--shadow);
       letter-spacing: 0.09em;
@@ -265,16 +265,20 @@ nav.site-nav {
   padding: 20px 16px 28px;
 }
 
-nav ul {
+.site-nav ul {
   list-style: none;
   padding: 0;
   margin: 0 auto;
-  max-width: 1100px;
+  max-width: 600px;
+
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, auto); /* exactly 2 items */
   gap: 12px;
-  background: transparent;
+
+  justify-content: center;  /* centre the whole grid */
+  justify-items: center;    /* centre each item */
 }
+
 
 nav a {
   display: block;
@@ -519,14 +523,13 @@ nav h5 {
 
   </section>
 
-  <nav class="site-nav" aria-label="Primary">
-    <ul>
-      <li><a href="[koalaspies.myportfolio.com](https://koalaspies.myportfolio.com/work)"><h5>Merch</h5></a></li>
-      <li><a href="Soundtrack.html"><h5>Soundtrack</h5></a></li>
-      <li><a href="about.html"><h5>About</h5></a></li>
-      <li><a href="morechapters.html"><h5>Part 2… in continuation…</h5></a></li>
-    </ul>
-  </nav>
+<nav class="site-nav" aria-label="Primary">
+  <ul>
+    <li><a href="Soundtrack.html">The Ballad of Aiden</a></li>
+    <li><a href="https://koalaspiessydney.au/">About</a></li>
+  </ul>
+</nav>
+
 
   <footer class="site-footer">
     <p>&copy; 2025 Justine Kelly &amp; Koala Spies</p>
